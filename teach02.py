@@ -9,14 +9,14 @@ id = input("ID Number: ")
 hair = input("Hair Color: ")
 eye = input("Eye Color: ")
 month = input("Month You Started Working: ")
-trained = input("(Please Enter Y for yes or N for no) Have You Been Trained: ")
+trained = input("Have You Been Trained: ")
 
+#If else for have you been trained response.
 
-if trained.lower() == "y":
+if trained[0].lower() == "y":
     trained = "Yes"
 else:
     trained = "No"
-
 
 
 #Print ID in required order
