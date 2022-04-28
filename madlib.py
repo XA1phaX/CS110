@@ -30,7 +30,7 @@ def grammerfunc(word):
     else:
         return "a "
 
-#print story
+#print story  
 
 print("\nYour story is:\n")
 print("One " + adj1 + ", " + adj2 + " night, no stars insight. Thunder roared")
