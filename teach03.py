@@ -18,7 +18,9 @@ from cmath import pi
 # circarea = pi * circradius ** 2
 # print(f"The area of the circle is: {circarea}")
 
-#Stretch lines 22-31
+#----------------------------------------------------------------------------------------------
+
+#Stretch 2 lines 24-33
 # length = float(input("Please enter a single length value: "))
 # sarea = length **2
 # carea = pi * length ** 2
@@ -31,7 +33,7 @@ from cmath import pi
 # print(f"A sphere with that radius has a volume of: {sphere}")
 
 #----------------------------------------------------------------------------------------------
-#Strecth 3 lines 36-67
+#Strecth 3 lines 38-69
 
 squarelength = float(input("What is the length of a side of the square in centimeters? "))
 squarearea = squarelength **2
