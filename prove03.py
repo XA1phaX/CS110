@@ -1,32 +1,32 @@
 #Recieving inputs
 
-childmeal = float(input("What is the price of a child's meal? "))
-adultmeal = float(input("What is the price of an adult meal? "))
-isdrink = input("Would you like any drinks? ")
+childMeal = float(input("What is the price of a child's meal? "))
+adultMeal = float(input("What is the price of an adult meal? "))
+isDrink = input("Would you like any drinks? ")
 
-if((isdrink[0].lower()) == 'y'):
-    drinkprice = float(input("What is the cost of a drink? "))
-    drinknum = int (input("How many drinks would you like? "))
+if((isDrink[0].lower()) == 'y'):
+    drinkPrice = float(input("What is the cost of a drink? "))
+    drinkNum = int (input("How many drinks would you like? "))
 
 else:
-    drinkprice = 0
-    drinknum = 0
+    drinkPrice = 0
+    drinkNum = 0
 
-childnum = int(input("How many children are there? "))
-adultnum = int(input("How many adults are there? "))
-salestax = float(input("What is the sales tax rate? "))
+childNum = int(input("How many children are there? "))
+adultNum = int(input("How many adults are there? "))
+salesTax = float(input("What is the sales tax rate? "))
 
 #Preform Calculations
 
-childcost = childmeal * childnum
-adultcost = adultmeal * adultnum
-drinktotal = drinkprice * drinknum
-groupcost = childcost + adultcost + drinktotal
-tax = (groupcost * salestax) / 100
-total = groupcost + tax
+childCost = childMeal * childNum
+adultCost = adultMeal * adultNum
+drinkTotal = drinkPrice * drinkNum
+groupCost = childCost + adultCost + drinkTotal
+tax = (groupCost * salesTax) / 100
+total = groupCost + tax
 #Output
 
-print(f"Sub-total: ${round(groupcost, 2)}")
+print(f"Sub-total: ${round(groupCost, 2)}")
 print(f"Tax: ${round(tax, 2)}")
 print(f"Total: ${round(total, 2)}")
 
