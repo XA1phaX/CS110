@@ -9,7 +9,7 @@ if((isdrink[0].lower()) == 'y'):
     drinknum = int (input("How many drinks would you like? "))
 
 else:
-    drinkcost = 0
+    drinkprice = 0
     drinknum = 0
 
 childnum = int(input("How many children are there? "))
@@ -22,7 +22,18 @@ childcost = childmeal * childnum
 adultcost = adultmeal * adultnum
 drinktotal = drinkprice * drinknum
 groupcost = childcost + adultcost + drinktotal
-
+tax = (groupcost * salestax) / 100
+total = groupcost + tax
 #Output
 
-print(f"The sub-total is ${round(groupcost, 2)} before tax.")
+print(f"Sub-total: ${round(groupcost, 2)}")
+print(f"Tax: ${round(tax, 2)}")
+print(f"Total: ${round(total, 2)}")
+
+#Getting pay amount
+payment = float(input("What is the payment amount: "))
+if(payment < total):
+    print("Time to wash some dishes!")
+else:
+    change = payment - total
+    print(f"Change: {round(change, 2)}")
