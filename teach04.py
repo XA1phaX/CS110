@@ -16,9 +16,11 @@ c = (1 / 2) * density * cross_section * drag
 velocity = math.sqrt((mass * gravity) / c) * (1 - math.exp((-math.sqrt (mass * gravity * c) / mass) * time))
 
 #Output
-print(f"The inner value of c is: {round(c, 3)}")
-print(f"The velocity after {time} seconds is {round(velocity, 3)} m/s")
+print(f"\nThe inner value of c is: {c:.3f}")
+print(f"\nThe velocity after {time} seconds is {velocity:.3f} m/s")
+answer = input("\nWould you like to know the terminal velocity? ")
 
 #Terminal Velocity
-v_terminal = math.sqrt((mass * gravity) / c)
-print(f"Terminal velocity for object: {round(v_terminal, 3)} m/s")
+if(answer[0] == "y"):
+    v_terminal = math.sqrt((mass * gravity) / c)
+    print(f"\nTerminal velocity for object: {v_terminal:.3f} m/s")

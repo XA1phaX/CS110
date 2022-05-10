@@ -24,6 +24,7 @@ drinkTotal = drinkPrice * drinkNum
 groupCost = childCost + adultCost + drinkTotal
 tax = (groupCost * salesTax) / 100
 total = groupCost + tax
+
 #Output
 
 print(f"Sub-total: ${round(groupCost, 2)}")
@@ -31,9 +32,10 @@ print(f"Tax: ${round(tax, 2)}")
 print(f"Total: ${round(total, 2)}")
 
 #Getting pay amount
+
 payment = float(input("What is the payment amount: "))
 if(payment < total):
     print("Time to wash some dishes!")
 else:
     change = payment - total
-    print(f"Change: {round(change, 2)}")
+    print(f"Change: ${round(change, 2)}")
