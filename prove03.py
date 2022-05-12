@@ -1,5 +1,5 @@
 #Recieving inputs
-
+print("\nWelcome to the Meal Receipt Calculator!\nPlease eneter the following:\n")
 childMeal = float(input("What is the price of a child's meal? "))
 adultMeal = float(input("What is the price of an adult meal? "))
 isDrink = input("Would you like any drinks? ")
@@ -20,16 +20,16 @@ salesTax = float(input("What is the sales tax rate? "))
 
 childCost = childMeal * childNum
 adultCost = adultMeal * adultNum
-drinkTotal = drinkPrice * drinkNum
+drinkTotal = drinkPrice * drinkNum 
 groupCost = childCost + adultCost + drinkTotal
 tax = (groupCost * salesTax) / 100
 total = groupCost + tax
 
 #Output
 
-print(f"Sub-total: ${round(groupCost, 2)}")
-print(f"Tax: ${round(tax, 2)}")
-print(f"Total: ${round(total, 2)}")
+print(f"Sub-total: ${groupCost:.2f}")
+print(f"Tax: ${tax:.2f}")
+print(f"Total: ${total:.2f}")
 
 #Getting pay amount
 
@@ -38,4 +38,4 @@ if(payment < total):
     print("Time to wash some dishes!")
 else:
     change = payment - total
-    print(f"Change: ${round(change, 2)}")
+    print(f"Change: ${change:.2f}")
