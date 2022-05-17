@@ -1,7 +1,7 @@
-# Get input
+# initiate while loop for testing
 x = 0
 while x < 6:
-
+    # Get input
     grade = float(input("\nWhat is your grade percentage? "))
 
     # Find letter grade(if-else)
