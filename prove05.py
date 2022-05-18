@@ -38,12 +38,18 @@ else:
 
 if path == 1:
     p1_answer1 = input(
-        f"You start heading north away from where you plan to camp. You realize that you have\
-     lost your way!\n You scavenge around for your compass. You realize you lost it with some other basic supplies!\
-     \ndo you {color.UNDERLINE()}RETURN{color.END()} or make {color.UNDERLINE}CAMP{color.END()} here for the night?\n"
+        f"\nYou start heading north away from where you plan to camp. You realize that you have\
+lost your way!\nYou scavenge around for your compass. You realize you lost it with some other basic supplies!\
+\ndo you {color.UNDERLINE()}RETURN{color.END()} or make {color.UNDERLINE()}CAMP{color.END()} here for the night?\n"
     )
 if path == 2:
     p2_answer1 = input(
-        f"It takes you about an hour to find the perfect spot. You begin setting up camp. After 2 hours, your camp \nis \
-     setup and you notice you have about 2 hours until "
+        f"\nIt takes you about an hour to find the perfect spot. You begin setting up camp. After 2 hours, your camp \nis\
+setup and you notice you have about 2 hours until sundown. Do you get {color.UNDERLINE()}FIREWOOD{color.END()} or do you\
+{color.UNDERLINE()}EXPLORE{color.END()}?\n"
     )
+
+# Exit text
+print(
+    f"Thank you for playing! The text game is still under development but will be completed soon! Check back in about a week!"
+)
