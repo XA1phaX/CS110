@@ -1,8 +1,11 @@
+from Lists.words import words
+import random
+
 # Intro message
 print("\nWelcome to the word guessing game!\n\n")
 
 # Setting up vairables
-secretWord = "giraffe"
+secretWord = random.choice(words)
 guess = ""
 guess_count = 0
 
