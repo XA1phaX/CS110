@@ -34,7 +34,7 @@ cap
 answer 
 pie 
 grab 
-Asian 
+asian 
 south 
 Soviet 
 nevertheless 
