@@ -1,13 +1,9 @@
 from Lists.words import *
 import random
 
-# Intro message
-print("\nWelcome to the word guessing game!\n\n")
-
 # Setting up vairables
 secretWord = random.choice(words)
 letterCount = len(secretWord)
-# startingLetter = secretWord[0]
 guess = ""
 guess_count = 0
 i = 0
@@ -15,10 +11,9 @@ hint = []
 for letter in secretWord:
     hint.append("_")
 hintUpdated = hint
-# Temporary help texts
-# print(f"\nThe secret word is {letterCount} letters long.\n")
-# print(f"The first letter of the secret word is {startingLetter}.\n")
-print(secretWord)
+
+# Intro message
+print("\nWelcome to the word guessing game!\n")
 print(f"Your hint is: " + " ".join(hint) + "\n")
 
 # Run the game
