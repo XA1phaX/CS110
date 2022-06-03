@@ -5,6 +5,11 @@ import random
 
 # Imports ^^^
 
+# Permanent local variables.
+user = ""
+newUser = ""
+score = 0
+
 # Setting up vairables
 color = colorClass()
 playagain = "y"
@@ -213,6 +218,33 @@ print(
     "\nWelcome to the word guessing game!\nCommands:\nIf you would like to give up at anytime, type 'giveup'\n\
 If you would like to see the hint at anytime, and are on Easy or Medium difficulty, type 'hint'\n"
 )
+
+newUser = input("Are you a new player? (y/n): ").lower()
+
+if newUser == "y":
+    response = input(
+        "Would you like to create a Username so that your score will be saved?(y/n): "
+    ).lower()
+    if response == "y":
+        user = input(
+            f"Please enter your username(Make it unique and all lowercase. \nIf you would like to log in again \
+    in the future, {color.BOLD()}WRITE IT DOWN!{color.END()}): "
+        ).lower()
+        print(f"\nWelcome {user}!\n")
+    else:
+        print(
+            "\nWelcome! You will be playing on 'Guest' mode. Your score will not be recorded.\n"
+        )
+        user = "guest"
+elif newUser == "n":
+    user = input("Please enter your username: ").lower()
+    print(f"\nWelcome {user}!\n")
+else:
+    print(
+        "\nYou did not enter a valid response. You will be playing on 'Guest' mode. Your score will not be recorded.\n"
+    )
+    user = "guest"
+
 difficultyFunc()
 for letter in secretWord:
     hint.append("_")
