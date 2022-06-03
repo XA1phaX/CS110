@@ -2,10 +2,16 @@ from os import system, name
 from Lists.words import *
 from Classes.pretty import *
 import random
+import sqlite3
+from contextlib import closing
 
 # Imports ^^^
 
-# Permanent local variables.
+# Connect to local database.
+connection = sqlite3.connect("users.db")
+cursor = connection.cursor()
+
+# Permanent local variables (DO NOT MAKE GLOBAL).
 user = ""
 newUser = ""
 score = 0
@@ -21,6 +27,9 @@ i = 0
 hint = []
 correct = []
 difficulty = ""
+newPoints = 0
+baseNewPoints = 0
+multiplyer = 1
 
 
 # Functions
@@ -28,25 +37,32 @@ difficulty = ""
 # Sets up secret word depending on user input.
 def wordDifficulty():
     secretWord = ""
+    global baseNewPoints
     wordDif = input(
-        f"\nWhat word difficulty would you like to play on? {color.GREEN()}EASY{color.END()},\
- {color.BLUE()}Medium{color.END()}, {color.RED()}Hard{color.END()}, or {color.RED()}{color.BOLD()}EXTREME{color.END()}? "
+        f"\nWhat word difficulty would you like to play on? {color.GREEN()}EASY{color.END()}(10 points),\
+ {color.BLUE()}Medium{color.END()}(25 points), \n{color.RED()}Hard{color.END()}(50 points), \
+or {color.RED()}{color.BOLD()}EXTREME{color.END()}(100 points)? "
     )
     wordDif = wordDif.lower()
     if wordDif == "easy":
         secretWord = random.choice(easy)
+        baseNewPoints = 10
         return secretWord
     elif wordDif == "medium":
         secretWord = random.choice(medium)
+        baseNewPoints = 25
         return secretWord
     elif wordDif == "hard":
         secretWord = random.choice(hard)
+        baseNewPoints = 50
         return secretWord
     elif wordDif == "extreme":
         secretWord = random.choice(extreme)
+        baseNewPoints = 100
         return secretWord
     else:
         secretWord = random.choice(words)
+        baseNewPoints = 15
         return secretWord
 
 
@@ -57,10 +73,13 @@ def difficultyFunc():
     global difficulty
     global secretWord
     global letterCount
+    global multiplyer
+    global baseNewPoints
     # Asks user for difficulty.
     difficulty = input(
-        f"Choose a difficulty level: \n{color.GREEN()}EASY{color.END()} (100 guesses & free hints!), {color.BLUE()}MEDIUM{color.END()}\
-(12 guesses & hints|Hints cost 1 guess!|), \nor {color.RED()}HARD{color.END()} (7 guesses |No hints|): "
+        f"Choose a difficulty level: \n{color.GREEN()}EASY{color.END()} (100 guesses & free hints! No score muliplyer), \n{color.BLUE()}MEDIUM{color.END()}\
+(12 guesses & hints|Hints cost 2 points and 1 guess!| Score multiplyer: 2 for each guesses left!), \
+\nor {color.RED()}HARD{color.END()} (7 guesses |No hints| Score multiplyer: 20 for each guess left!): "
     )
     # Sets difficulty to lowercase.
     difficulty = difficulty.lower()
@@ -68,6 +87,7 @@ def difficultyFunc():
     if difficulty == "easy":
         # Sets number of guesses to 100.
         guess_count = 100
+        multiplyer = 1
         # Sets secret word to wordDifficulty().
         secretWord = wordDifficulty()
         #
@@ -84,6 +104,7 @@ def difficultyFunc():
     # If user chooses medium difficulty.
     elif difficulty == "medium":
         guess_count = 12
+        multiplyer = 2
         secretWord = wordDifficulty()
         print(color.BLUE())
         print(
@@ -100,6 +121,7 @@ def difficultyFunc():
     # If user chooses hard difficulty.
     elif difficulty == "hard":
         guess_count = 7
+        multiplyer = 20
         secretWord = wordDifficulty()
         print(color.RED())
         print(
@@ -118,7 +140,13 @@ def difficultyFunc():
         print(
             "\nYou did not choose a valid difficulty level. You will only have 3 guesses as punishment for your mistake."
         )
+        print(
+            "Oh, and you will be locked on the hardest word difficulty for the rest of the game."
+        )
+        difficulty = "cheater"
         guess_count = 3
+        multiplyer = 1000
+        baseNewPoints = 100
         print(
             rf"""{color.RED()}
     ███████████████████████████
@@ -185,6 +213,7 @@ def reset():
     global correct
     global letter
     global difficulty
+    global newPoints
     # Sets variables to default values.
     secretWord = ""
     guess = ""
@@ -193,6 +222,7 @@ def reset():
     i = 0
     hint = []
     correct = []
+    newPoints = 0
     # Tells user the game has restarted.
     print(f"\n{color.GREEN()}The word has been reset!{color.END()}")
     # Displays commands.
@@ -226,19 +256,34 @@ if newUser == "y":
         "Would you like to create a Username so that your score will be saved?(y/n): "
     ).lower()
     if response == "y":
-        user = input(
+        target_user = input(
             f"Please enter your username(Make it unique and all lowercase. \nIf you would like to log in again \
-    in the future, {color.BOLD()}WRITE IT DOWN!{color.END()}): "
+in the future, {color.BOLD()}WRITE IT DOWN!{color.END()}): "
         ).lower()
-        print(f"\nWelcome {user}!\n")
+        cursor.execute(f"INSERT INTO users (name, score) VALUES (?, 0)", (target_user,))
+        print(f"\nWelcome {target_user}!\n")
+        user = target_user
     else:
         print(
             "\nWelcome! You will be playing on 'Guest' mode. Your score will not be recorded.\n"
         )
         user = "guest"
 elif newUser == "n":
-    user = input("Please enter your username: ").lower()
-    print(f"\nWelcome {user}!\n")
+    target_user = input("Please enter your username: ").lower()
+    tempuser = str(
+        cursor.execute(
+            "SELECT name FROM users WHERE name = ?",
+            (target_user,),
+        ).fetchall()
+    )
+    user = tempuser[3 : len(tempuser) - 4]
+    tempscore = cursor.execute(
+        "SELECT score FROM users WHERE name = ?",
+        (target_user,),
+    ).fetchall()
+    score = tempscore[0][0]
+    print(f"\nWelcome back {user}!")
+    print(f"Your current score is: {score}\n")
 else:
     print(
         "\nYou did not enter a valid response. You will be playing on 'Guest' mode. Your score will not be recorded.\n"
@@ -257,10 +302,31 @@ while playagain == "y":
         # Check number of guesses left and play again.
         if guess_count <= 0:
             print(f"You ran out of guesses! The word was {secretWord}! You lost.")
+            score = score + newPoints
+            print(f"Points earned: {newPoints}  |  Total Score: {score}")
+            if difficulty == "cheater":
+                cursor.execute(
+                    "UPDATE users SET score = ? WHERE name = ?", (score, user)
+                )
+                connection.commit()
+                with closing(sqlite3.connect("users.db")) as connection:
+                    with closing(connection.cursor()) as cursor:
+                        rows = cursor.execute("SELECT 1").fetchall()
+                        print("Game saved!")
+                quit()
             playagain = input("Would you like to play again? (y/n): ").lower()
             if playagain == "y":
                 reset()
             else:
+                print("Thanks for playing! See you again soon!")
+                cursor.execute(
+                    "UPDATE users SET score = ? WHERE name = ?", (score, user)
+                )
+                connection.commit()
+                with closing(sqlite3.connect("users.db")) as connection:
+                    with closing(connection.cursor()) as cursor:
+                        rows = cursor.execute("SELECT 1").fetchall()
+                        print("Game saved!")
                 quit()
         # Main game loop.
         else:
@@ -277,14 +343,53 @@ while playagain == "y":
                 print(
                     f"You guessed correctly! The word was {secretWord}! You had {guess_count} guesses left!"
                 )
+                if difficulty != "easy":
+                    newPoints = baseNewPoints * (guess_count * multiplyer)
+                elif difficulty == "easy":
+                    newPoints = baseNewPoints
+                if difficulty == "cheater":
+                    score = score + newPoints
+                    if user != "guest":
+                        cursor.execute(
+                            "UPDATE users SET score = ? WHERE name = ?", (score, user)
+                        )
+                        connection.commit()
+                        with closing(sqlite3.connect("users.db")) as connection:
+                            with closing(connection.cursor()) as cursor:
+                                rows = cursor.execute("SELECT 1").fetchall()
+                                print("Game saved!")
+                    quit()
+                # playagain = input("Would you like to play again? (y/n): ").lower()
+                # if playagain == "y":
+                #     score = score + newPoints
+                #     reset()
+                # else:
+                #     score = score + newPoints
+                print(f"Points earned: {newPoints}  |  Total Score: {score}")
                 playagain = input("Would you like to play again? (y/n): ").lower()
                 if playagain == "y":
+                    score = score + newPoints
                     reset()
                 else:
+                    print("Thanks for playing! See you again soon!")
+                    score = score + newPoints
+                    if user != "guest":
+                        cursor.execute(
+                            "UPDATE users SET score = ? WHERE name = ?", (score, user)
+                        )
+                        connection.commit()
+                        with closing(sqlite3.connect("users.db")) as connection:
+                            with closing(connection.cursor()) as cursor:
+                                rows = cursor.execute("SELECT 1").fetchall()
+                                print("Game saved!")
                     quit()
-            # Check if user gave up on current word and play again.
+
+                # Check if user gave up on current word and play again.
             elif guess == "giveup":
                 print(f"The word was {secretWord}! You lost.")
+                if difficulty == "cheater":
+                    print(f"{color.RED()}Quitter!{color.END()}")
+                    quit()
                 playagain = input("Would you like to play again? (y/n): ").lower()
                 if playagain == "y":
                     reset()
@@ -308,7 +413,7 @@ while playagain == "y":
                     print(f"\nYour hint is: " + " ".join(hintLetter) + "\n")
                     guess_count += 1
                 # Medium difficulty hint.
-                elif difficulty == "medium":
+                elif difficulty == "medium" and score > 2:
                     hintLetter = random.choice(secretWord)
                     while hintLetter in correct and len(correct) < len(secretWord):
                         hintLetter = random.choice(secretWord)
@@ -323,16 +428,25 @@ while playagain == "y":
                         + " ".join(hintLetter)
                         + "\nThat cost 1 guess!\n"
                     )
+                    score = score - 2
                 # Hard difficulty hint.
                 elif difficulty == "hard":
                     print(f"Hard mode has no hints!")
                 # Cheater hint
-                else:
+                elif difficulty == "cheater":
                     print(f"You think we would give you a hint? HA!\n")
                     print(
                         f"{color.RED()}{color.BOLD()}C\nH\nE\nA\nT\nE\nR\n!{color.END()}"
                     )
                     quit()
+                else:
+                    print("You do not have enough points to get a hint!")
+            elif len(guess) >= 22:
+                print("Trying to cheat? No more multiplier for you!")
+                multiplyer = 0
+            elif "a" and "e" and "i" and "o" and "u" in guess:
+                print("Trying to cheat? -5 points!")
+                score = score - 5
             # Check guess letters declaring variable 'i' and updating hint.
             else:
                 for letter in guess:
