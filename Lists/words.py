@@ -4,6 +4,7 @@ words = []
 easy = []
 medium = []
 hard = []
+extreme = []
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -25,3 +26,7 @@ with open(os.path.join(__location__, "hard.txt"), "r") as f:
     for line in f:
         for word in line.split():
             hard.append(word)
+with open(os.path.join(__location__, "extreme.txt"), "r") as f:
+    for line in f:
+        for word in line.split():
+            extreme.append(word)
