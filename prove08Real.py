@@ -670,7 +670,7 @@ while playagain == "y":
             elif len(guess) + 7 >= len(secretWord):
                 print("Trying to cheat? No more multiplier for you!")
                 multiplyer = 0
-            elif guess in cheatList:
+            elif guess == "aeiou":
                 print("Trying to cheat? -5 points!")
                 score = score - 5
             # Check guess letters declaring variable 'i' and updating hint.
