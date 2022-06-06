@@ -644,7 +644,7 @@ while playagain == "y":
                     while hintLetter in correct and len(correct) < len(secretWord):
                         hintLetter = random.choice(secretWord)
                         a += 1
-                        if a <= 30:
+                        if a >= 30:
                             print(
                                 "No more hints available! (There are multiples of some letters!)"
                             )
@@ -667,7 +667,7 @@ while playagain == "y":
                     quit()
                 else:
                     print("You do not have enough points to get a hint!")
-            elif len(guess) + 7 >= len(secretWord):
+            elif len(guess) >= len(secretWord) + 7:
                 print("Trying to cheat? No more multiplier for you!")
                 multiplyer = 0
             elif guess == "aeiou":
