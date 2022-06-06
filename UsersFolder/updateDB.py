@@ -14,8 +14,8 @@ cursor = connection.cursor()
 # cursor.execute("INSERT INTO users VALUES ('master', 1000000)")
 # cursor.execute("INSERT INTO users VALUES ('test', 7)")
 
-# rows = cursor.execute("SELECT name, score FROM users").fetchall()
-# print(rows)
+# allUsers = cursor.execute("SELECT name, score FROM users").fetchall()
+# print(allUsers)
 
 ###Target specific user
 # target_user = "master"
@@ -33,7 +33,7 @@ cursor = connection.cursor()
 # print(rows)
 
 ###Delete user
-# delete_user = "test"
+# delete_user = "master"
 # cursor.execute("DELETE FROM users WHERE name = ?", (delete_user,))
 # rows = cursor.execute("SELECT name, score FROM users").fetchall()
 # print(rows)

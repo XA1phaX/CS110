@@ -5,6 +5,7 @@ easy = []
 medium = []
 hard = []
 extreme = []
+cheatList = []
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -30,3 +31,7 @@ with open(os.path.join(__location__, "extreme.txt"), "r") as f:
     for line in f:
         for word in line.split():
             extreme.append(word)
+with open(os.path.join(__location__, "cheat.txt"), "r") as f:
+    for line in f:
+        for word in line.split():
+            cheatList.append(word)
