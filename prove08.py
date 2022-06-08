@@ -15,8 +15,7 @@ for letter in secretWord:
     hint.append("_")
 hintUpdated = []
 
-# Start
-print(secretWord)
+# Start game
 print(f"Your hint is: " + " ".join(hint) + "\n")
 
 # Run the game
@@ -26,14 +25,15 @@ while guess != secretWord:
     guess_count += 1
     if guess == secretWord:
         print(
-            f"You guessed correctly! The word was {secretWord}! It took you {guess_count} tries."
+            f"You guessed correctly! The word was {secretWord}! \nIt took you {guess_count} tries."
         )
     else:
         for letter in guess:
-            if i > letterCount:
+            if i > letterCount - 1:
                 hintUpdated.append(letter.lower())
                 i += 1
             else:
+
                 if letter in secretWord:
 
                     if letter == secretWord[i]:
