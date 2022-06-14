@@ -17,7 +17,14 @@ while True:
     print("4. Compute total")
     print("5. Quit")
     # Get user input
-    action = int(input("\nPlease enter an action: "))
+    action = input("\nPlease enter an action: ")
+    try:
+        action = int(action)
+    except ValueError:
+        print(
+            f"\n{color.RED()}{color.BOLD()}ERROR{color.END()}: Please enter an action number"
+        )
+        continue
     # Perform action
     if action == 1:
         # Action 1: Add item to cart
@@ -36,16 +43,22 @@ while True:
     elif action == 2:
         # View cart
         print("\nYour cart contains:")
-        for item in cart:
-            print(item, ":", cart[item])
+        # print cart items, prices, and quantities
+        for i in range(len(cart["item"])):
+            print(f"{cart['item'][i]} - ${cart['price'][i]} x {cart['quantity'][i]}")
+
+        # for item in cart:
+        #     print(item, ":", *cart[item])
     elif action == 3:
         # Remove item from cart
         item = input("What item would you like to remove? ")
-        # Remove item from cart
-        cart["item"].remove(item)
-        cart["price"].remove(item)
-        cart["quantity"].remove(item)
-        print(f"{color.GREEN()}{item} removed from cart!{color.END()}")
+        for i in range(len(cart["item"])):
+            if cart["item"][i] == item:
+                cart["item"].pop(i)
+                cart["price"].pop(i)
+                cart["quantity"].pop(i)
+                print(f"{color.GREEN()}{item} removed from cart!{color.END()}")
+                break
     elif action == 4:
         # Compute total
         total = 0
