@@ -45,7 +45,9 @@ while True:
         print("\nYour cart contains:")
         # print cart items, prices, and quantities
         for i in range(len(cart["item"])):
-            print(f"{cart['item'][i]} - ${cart['price'][i]} x {cart['quantity'][i]}")
+            print(
+                f"Item {i+1}: {cart['item'][i]} - ${cart['price'][i]:.2f} x {cart['quantity'][i]}"
+            )
 
         # for item in cart:
         #     print(item, ":", *cart[item])
@@ -62,9 +64,13 @@ while True:
     elif action == 4:
         # Compute total
         total = 0
+        tax = 0
         for i in range(len(cart["item"])):
             total += cart["price"][i] * cart["quantity"][i]
+        tax = total * 0.085
         print(f"The total is ${total:.2f}")
+        print(f"The tax is ${tax:.2f}")
+        print(f"The total with tax is ${total + tax:.2f}")
 
     elif action == 5:
         # Quit
