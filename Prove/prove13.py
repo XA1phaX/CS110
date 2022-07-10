@@ -2,7 +2,7 @@
 # Ask user for temperature
 temp = float(input("\nWhat is the temperature? "))
 # Ask user for Fehrenheit or Celsius
-temp_type = input("Farhenheit or Celsius(F/C)? ")
+temp_type = input("Farhenheit, Celsius or Kelvin(F/C/K)? ")
 
 
 ###Functions###
@@ -35,14 +35,23 @@ def fahrenheit_to_celcius(temp):
     return celcius
 
 
+# Convert Kelvin to Celcius
+def kelvin_to_celcius(temp):
+    celcius = temp - 273.15
+    return celcius
+
+
 ###Main Program###
 if temp_type.lower() == "c":
-    temp = celcius_to_fahrenheit(temp)
+    contemp = celcius_to_fahrenheit(temp)
+elif temp_type.lower() == "k":
+    contemp = kelvin_to_celcius(temp)
+    contemp = celcius_to_fahrenheit(contemp)
 else:
-    temp = temp
+    contemp = temp
 
 for i in range(5, 61, 5):
-    windchill = wind_chill(temp, i)
+    windchill = wind_chill(contemp, i)
     celWindchill = fahrenheit_to_celcius(windchill)
     kelWindchill = celcius_to_kelvin(celWindchill)
     print(
