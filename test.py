@@ -1,5 +1,10 @@
-from cgitb import text
+def display_numbers(x, y):
 
-test = "  hello world    "
-test = "".join(test.split())
-print(test)
+    print(x)
+
+
+x = 3
+
+y = 4
+
+display_numbers(y, x)
